@@ -18,6 +18,14 @@ gx APIs generally require multiple queries to retrieve all the relevant data,
 meaning it will need to be adjusted to handle merging multiple objects at some point.
 Design for that has not yet begun.
 
+# Usage
+
+```js
+let gx = JSON.parse(gxFromFamilySearchAPI)
+let g7 = GEDCOMXTo7(gx, console.error)
+// here g7 is a string containing an entire GEDCOM 7.0 dataset
+```
+
 # Limitations 
 
 This will not be perfect for at least the following reasons:
