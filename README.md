@@ -5,7 +5,7 @@ It is written in pure dependency-free JavaScript, with the intent that it could 
 
 # Status
 
-The code in `xto70.js` captures over 90% of the content in a few example JSON experts from Family Tree.
+The code in `xto70.js` captures over 90% of the content in a few example JSON exports from Family Tree.
 For those example files, the GEDCOM it produces does validate with <http://ged-inline.elasticbeanstalk.com/>.
 
 The approach used so far has been focused on getting something working quickly.
