@@ -29,7 +29,7 @@ let g7 = GEDCOMXTo7(gx, console.error)
 If you run this on in a web browser client and want to let the user save the result as a file, you can use a function like this:
 
 ```js
-(function () {
+(function (g7) {
     var blob = new Blob([g7], {type:'text/vnd.familysearch.gedcom'})
     var a = document.createElement('a')
     var ex = "xto7-"+new Date().toISOString().replace(/[.].*|[^0-9]/g,'')+".ged"
@@ -42,7 +42,7 @@ If you run this on in a web browser client and want to let the user save the res
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(a.href)
-})()
+})(g7)
 ```
 
 # Limitations 
