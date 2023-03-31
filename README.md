@@ -1,7 +1,7 @@
 # Project goal
 
 The goal of this project is to convert FamilySearch Family Tree's dialect of GEDCOM X (hereinafter gx) to FamilySearch GEDCOM 7.0 (hereinafter g7).
-It is written in pure dependency-free JavaScript, with the intent that it could be used as a client-size function in the browser or with an server-side JavaScript engine.
+It is written in pure dependency-free JavaScript, with the intent that it could be used as a client-size function in the browser or with any server-side JavaScript engine.
 
 # Status
 
