@@ -26,6 +26,25 @@ let g7 = GEDCOMXTo7(gx, console.error)
 // here g7 is a string containing an entire GEDCOM 7.0 dataset
 ```
 
+If you run this on in a web browser client and want to let the user save the result as a file, you can use a function like this:
+
+```js
+(function () {
+    var blob = new Blob([g7], {type:'text/vnd.familysearch.gedcom'})
+    var a = document.createElement('a')
+    var ex = "xto7-"+new Date().toISOString().replace(/[.].*|[^0-9]/g,'')+".ged"
+    var name = prompt("Save as what file name?", ex)
+    if (!name) return
+    a.setAttribute('download', name)
+    a.setAttribute('target', '_blank')
+    a.href = URL.createObjectURL(blob)
+    document.body.append(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(a.href)
+})()
+```
+
 # Limitations 
 
 This will not be perfect for at least the following reasons:
