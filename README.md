@@ -18,6 +18,14 @@ gx APIs generally require multiple queries to retrieve all the relevant data,
 meaning it will need to be adjusted to handle merging multiple objects at some point.
 Design for that has not yet begun.
 
+## Known applications using this code
+
+- <https://gedcom.surge.sh> lets you download a `.ged` file representing your immediate ancestors as stored in the FamilySearch Family Tree.
+
+I'm in conversations with multiple other tool developers about the potential for other, more feature-rich applications;
+hopefully this section will grow soon.
+
+
 # Usage
 
 ```js
