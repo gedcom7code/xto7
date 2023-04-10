@@ -61,9 +61,21 @@ It is unlikely that this will ever be changed to a streaming parser because both
 
 # License
 
-This is free and unencumbered software released into the public domain. Anyone is free to copy, modify, publish, use, compile, sell, or distribute this software, either in source code form or as a compiled binary, for any purpose, commercial or non-commercial, and by any means. See <LICENSE> for more.
+This code is released under a mix of MIT and UNLICENSE.
+Each file contains either the MIT license
+or both licenses in a comment at the top of the file.
+If it contains both, it also includes the following statement:
 
-If anyone wishes to use this software but is worried about the relative newness of The Unlicense, let me know and I can add additional licenses it can also be used under.
+> This code is dual licensed under the Unlicense and MIT licenses. Specifically, you may use it under the terms of either license, and may remove the text of the other license (along with this notice) from your redistribution of this code if you so desire.
+
+The dual licensing is motivated by the following observations:
+
+- I, Luther Tychonievich, would like to participate in a small bit of ideological activism by promoting the Unlicense's goal: to disclaim copyright monopoly interest.
+- I would also like as many people to use the code as possible. Since the Unlicense is not a proven or well known license, I also offer this code under the MIT license, which is ubiquitous and accepted by almost everyone.
+- Some of my potential collaborators are uncomforable distributing code they contribute under the Unlicense; hence, files they contribute to may be licensed under the MIT license only.
+
+More specifically, this code and all its dependencies are compatible with this licensing choice. Any dependencies (direct and transitive) will always be limited to permissive licenses. This code will never depend on code that is not permissively licensed. This means rejecting any dependency that uses a copyleft license such as the GPL, LGPL, MPL or any of the Creative Commons ShareAlike licenses.
+
 
 # Contributing
 
@@ -73,5 +85,4 @@ Pull requests extending functionality or fixing errors are also welcome.
 Example files are also welcome.
 I do not have a FamilySearch Family Tree developer key and thus have been dependent on the generosity of others to share the files I've been testing so far.
 If you would like to give me more files exploring other aspects of the FS API, that would be most welcome.
-
-Those I have been given were not given with permission to be shared, so they do not appear in this repository.
+The example files that I have been given were not given with permission to be shared, so they do not appear in this repository.
