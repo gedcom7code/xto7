@@ -1,4 +1,4 @@
-The document tracks a planned full re-write. The current main branch has the following concerns:
+This document tracks a planned full re-write. The current main branch has the following concerns:
 
 - Can generate invalid GEDCOM (at least in theory)
     - [x] create a semantic GEDCOM library that handles extension tags, etc <https://github.com/gedcom7code/js-gedcom/>
