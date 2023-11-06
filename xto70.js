@@ -75,9 +75,10 @@
  * 
  * @param {object} gx - the a GEDOMX dataset parsed from JSON format
  * @param {function} error - a vararg function accepting error messages; for example, `console.error`
+ * @param {string} format - `text/json` if want prototype g7 JSON; otherwise get GEDCOM string
  * @returns {string} a corresponding GEDCOM 7.0 dataset
  */
-function GEDCOMXTo7(gx, error) {
+function GEDCOMXTo7(gx, error, format) {
   
   if (!error) error = (...args) => {}
   const xlinks = {}
@@ -96,11 +97,13 @@ function GEDCOMXTo7(gx, error) {
     this.tag = tag
     this.id = null
     this.payload = payload
-    if (payload && 'object' == typeof payload) {
+    if (payload === null) {
+      this.payload = null
+    } else if (payload && 'object' == typeof payload) {
       this.payload = payload
       if (!payload.id) this.payload.id = 'X'+(g7s.nextXrefID += 1)
     } else if (payload) this.payload = String(payload).replace(/\r\n?/g, '\n')
-    else this.payload = null
+    else this.payload = undefined
     this.subs = substructures.filter(x=>x)
   }
   g7s.nextXrefID = 0
@@ -109,7 +112,7 @@ function GEDCOMXTo7(gx, error) {
     let self = level + (this.id ? ' @'+this.id+'@':'') + ' '+this.tag
     if (this.payload && 'object' == typeof this.payload) {
       self += ' @'+this.payload.id+'@'
-    } else if (this.payload == '@VOID@') {
+    } else if (this.payload === null) {
       self += ' @VOID@'
     } else if (this.payload) {
       let txt = this.payload.replace(/\n(@?)/g, `\n${level+1} CONT $1$1`).replace(/^([0-9]+ CONT) $/mg, "$1")
@@ -118,6 +121,15 @@ function GEDCOMXTo7(gx, error) {
       else self += ' '+txt
     }
     return self+'\n'+this.subs.map(s => s.toString(level+1)).join('')
+  }
+  g7s.prototype.toJSO = function() {
+    const ans = {'tag':this.tag}
+    if (this.id) ans.id = this.id
+    if (this.payload === null) ans.pointer = null
+    else if ('object' == typeof this.payload) ans.pointer = '#'+this.payload.id
+    else if ('string' == typeof this.payload) ans.text = this.payload
+    if (this.subs.length > 0) ans.subs = this.subs.map(x=>x.toJSO())
+    return ans
   }
   g7s.prototype.add = function(...subs) { this.subs.push(...subs.filter(x=>x)) }
   
@@ -131,7 +143,7 @@ function GEDCOMXTo7(gx, error) {
   
   
   let records = {}
-  let header = g7s('HEAD', null, g7s('GEDC',null, g7s('VERS','7.0')))
+  let header = g7s('HEAD', undefined, g7s('GEDC',undefined, g7s('VERS','7.0')))
   let extensions = []
   let trailer = g7s('TRLR')
   
@@ -167,12 +179,12 @@ function GEDCOMXTo7(gx, error) {
         return ans
       }
       if ('original' in d) {
-        return g7s('DATE', null, g7s('PHRASE', d.original))
+        return g7s('DATE', undefined, g7s('PHRASE', d.original))
       } else return null
     }
     let bits = d.split('/')
     let phrases = []
-    if (bits.length > 3) return g7s('DATE',null,g7s('PHRASE','unsupported gedcomx data: '+d))
+    if (bits.length > 3) return g7s('DATE',undefined,g7s('PHRASE','unsupported gedcomx data: '+d))
     if (bits.length == 3) {
       // recurring
       let times = bits[0].substr(1)
@@ -281,12 +293,12 @@ function GEDCOMXTo7(gx, error) {
     }
     if (kml) {
       if (!(kml in records)) {
-        records[kml] = g7s('OBJE',null,g7s('FILE',kml, g7s('MEDI','application/vnd.google-earth.kml+xml')))
+        records[kml] = g7s('OBJE',undefined,g7s('FILE',kml, g7s('MEDI','application/vnd.google-earth.kml+xml')))
       }
       ans.add(g7s('_OBJE', records[kml]))
     }
     if (map) {
-      ans.add(g7s('MAP',null,
+      ans.add(g7s('MAP',undefined,
         g7s('LATI',(map.latitude<0?'S':'N')+Math.abs(map.latitude)),
         g7s('LONG',(map.longitude<0?'W':'E')+Math.abs(map.longitude)),
       ))
@@ -382,7 +394,7 @@ function GEDCOMXTo7(gx, error) {
   
   /** INDI records */
   const doPerson = p => {
-    let me = records['#'+p.id] || g7s('INDI', null, g7s('EXID', p.id, g7s('TYPE','https://gedcom.io/exid-type/FamilySearch-PersonId')))
+    let me = records['#'+p.id] || g7s('INDI', undefined, g7s('EXID', p.id, g7s('TYPE','https://gedcom.io/exid-type/FamilySearch-PersonId')))
     let modified = 0
     let didLiving = false
     
@@ -431,7 +443,7 @@ function GEDCOMXTo7(gx, error) {
       if (p.living === false) me.add(g7s('DEAT', 'Y'))
       else if (p.living) me.add(g7s('NO','DEAT'))
     }
-    if (modified) me.add(g7s('CHAN',null,doDate(modified)))
+    if (modified) me.add(g7s('CHAN',undefined,doDate(modified)))
     records['#'+p.id] = me
     me.resourceId = p.id // not displayed, just for local interlinks
   }
@@ -440,7 +452,7 @@ function GEDCOMXTo7(gx, error) {
   const makeOrFindFam = (p1,p2) => {
     let id = [p1?.resourceId,p2?.resourceId].sort().join('+')
     if (id in records) return records[id]
-    let ans = g7s('FAM',null,
+    let ans = g7s('FAM',undefined,
       p1?g7s('HUSB', records['#'+p1.resourceId]):null,
       p2?g7s('WIFE', records['#'+p2.resourceId]):null,
     )
@@ -548,7 +560,7 @@ function GEDCOMXTo7(gx, error) {
       ans = g7s(atags[f.type], f.value)
       if (ans.tag == 'IDNO') ans.add(g7s('TYPE','Unspecified')) // fix me: figure out why no NationalId fields have nations in FS data I've seen
     } else if (f.type in evens) {
-      ans = g7s('EVEN', null, g7s('TYPE', evens[f.type]))
+      ans = g7s('EVEN', undefined, g7s('TYPE', evens[f.type]))
       if (f.value) ans.add(g7s('NOTE', f.value))
     } else if (f.type in facts) {
       ans = g7s('FACT', f.value, g7s('TYPE', facts[f.type]))
@@ -607,7 +619,7 @@ function GEDCOMXTo7(gx, error) {
     } else if (f.type in atags) {
       ans = g7s(atags[f.type], f.value)
     } else if (f.type in evens) {
-      ans = g7s('EVEN', null, g7s('TYPE', evens[f.type]))
+      ans = g7s('EVEN', undefined, g7s('TYPE', evens[f.type]))
       if (f.value) ans.add(g7s('NOTE', f.value))
     } else if (f.type in facts) {
       ans = g7s('FACT', f.value, g7s('TYPE', facts[f.type]))
@@ -638,9 +650,9 @@ function GEDCOMXTo7(gx, error) {
   const doRelationship1 = r => {
     if (r.type != 'http://gedcomx.org/Couple') return
     if (!('#'+r.person1.resourceId in records))
-      records['#'+r.person1.resourceId] = g7s('INDI',null,g7s('EXID',r.person1.resourceId,g7s('TYPE','https://gedcom.io/exid-type/FamilySearch-PersonId')))
+      records['#'+r.person1.resourceId] = g7s('INDI',undefined,g7s('EXID',r.person1.resourceId,g7s('TYPE','https://gedcom.io/exid-type/FamilySearch-PersonId')))
     if (!('#'+r.person2.resourceId in records))
-      records['#'+r.person2.resourceId] = g7s('INDI',null,g7s('EXID',r.person2.resourceId,g7s('TYPE','https://gedcom.io/exid-type/FamilySearch-PersonId')))
+      records['#'+r.person2.resourceId] = g7s('INDI',undefined,g7s('EXID',r.person2.resourceId,g7s('TYPE','https://gedcom.io/exid-type/FamilySearch-PersonId')))
     let id = [r.person1.resourceId,r.person2.resourceId].sort().join('+')
     let fam = makeOrFindFam(r.person1, r.person2)
     fam.add(g7s('EXID', r.id, g7s('TYPE', 'https://gedcom.io/exid-type/FamilySearch-RelationshipId'))) // FIX ME: register this type
@@ -692,13 +704,13 @@ function GEDCOMXTo7(gx, error) {
           for(let i=0; i<fam.subs.length; i+=1) if (fam.subs[i].tag == 'CHIL') {
             chilnum -= 1
             if (chilnum == 0) {
-              if (fam.subs[i].payload == '@VOID@') fam.subs[i].payload = per
+              if (fam.subs[i].payload === null) fam.subs[i].payload = per
               else fam.subs.splice(i,0,g7s('CHIL',per))
               break
             }
           }
           if (chilnum > 0) {
-            while(chilnum > 1) { fam.add(g7s('CHIL','@VOID@')); chilnum -= 1; }
+            while(chilnum > 1) { fam.add(g7s('CHIL',null)); chilnum -= 1; }
             fam.add(g7s('CHIL',per))
           }
         }
@@ -739,6 +751,7 @@ function GEDCOMXTo7(gx, error) {
   
   
   
-  if (extensions) header.add(g7s('SCHMA',null, ...extensions))
+  if (extensions.length > 0) header.add(g7s('SCHMA',undefined, ...extensions))
+  if (format == 'text/json') return [header.toJSO()].concat(Object.values(records).map(x=>x.toJSO()))
   return header + Object.values(records).join('') + trailer
 }
