@@ -7,7 +7,6 @@ This document tracks a planned full re-write. The current main branch has the fo
 
 - Cannot merge files
     - 8-generation JSON has all source citations as opaque URLs, omits some events
-        - [ ] get own API key or someone else to write multi-query calls
     - JSON not trivially mergeable because of ahnentafel and d'aboville strings
     - Initial code can't merge, but semantic library should make it possible
     - [ ] build a stateful driver: create, feed each JSON file, dump
