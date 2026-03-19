@@ -55,6 +55,18 @@ G7 personal names are somewhat ideosyncratic, storing the name string (g7:INDI-N
 
 GX names have a level of distinction that G7 lacks. Each gx:Name may have multiple gx:NameForm, allowing a distinction between unrelated names of a person (like "Augusta Ada Byron" and "Ada Lovelace") and different forms of the same name (like "Augusta Ada King, Countess of Lovelace" and "Ada Lovelace"). G7 has no similar distinction; names and name forms are both stored in g7:INDI-NAME with no way to indicate whether two g7:INDI-NAMEs represent forms of the same name or distinct names.
 
-# ALIA
+# ALIA and EvidenceReference
 
-G7 has a structure g7:ALIA that allows asserting that two g7:record-INDI represent the same historical person. This structure is problematic even within the G7 ecosystem, with some applications using it extensively and others having no support for it at all. GX has no similar structure.
+G7 has a structure g7:ALIA that allows asserting that two g7:record-INDI represent the same historical person. This structure is problematic even within the G7 ecosystem, with some applications using it extensively and others having no support for it at all.
+
+GX has an gx:EvidenceReference which correpsonds one use of g7:ALIA: assembling an aggregate conclusion out of a tree of personas. Because of the spotty support for g7:ALIA in G7 tooling and the way different tools use g7:ALIA for different purposes, I've chosen not to impore gx:EvidenceReference to G7 at all. A G7 to GX converter would need to be cautious in confirming that g7:ALIA are used in a gx:EvidenceReference-compatible way (for example, without cycles) before convering g7:ALIA to gx:EvidenceReference.
+
+# Attribution
+
+GX allows gx:Attribution in many places. G7 allows g7:SUBM and g7:CHAN much more sparsely, and with less scope for storing information about the change.
+
+# Events and Facts
+
+GX has a much richer set of event and fact types than G7 does event and attribute types. 
+
+G7 has more ability to refine event and attribute with attribute payloads, `g7:TYPE`, and the generic `g7:EVEN` and `g7:TYPE` structures.
