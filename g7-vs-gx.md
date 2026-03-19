@@ -3,7 +3,7 @@
 I am part of the team that maintains [FamilySearch GEDCOM 7](https://github.com/FamilySearch/GEDCOM/) (hereinafter G7), but overall I would call [GEDCOM X](https://github.com/FamilySearch/GEDCOMX/) (hereinafter GX) a superior file format, though each has some strengths that the other lacks. However, GX has relatively little use as a file format (as of March 2026), leading to it being less practically useful as a means of data exchange.
 
 This page tries to document significant differences between the two formats' conceptual models. It ignores the more superficial differences in syntax. Note that while I am deeply familiar with G7, I have more modest familiarity with GX so I might have missed something.
-play
+
 # Relationships
 
 GX has two forms of relationship:
