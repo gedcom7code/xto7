@@ -77,5 +77,5 @@ G7 has more ability to refine event and attribute with `g7:TYPE` and with the ge
 
 GX has a robust and unambiguous date format for the prolypic Gregorian calendar. G7 allows dates to be stored in multiple calendar systems.
 
-G7 supports bounded approximate dates with `BET`/`AND` as distinct from multi-day events with `FROM`/`TO`. GX has just one form of data range; it is not clear to me from the specification whether that form is intended to be what G7 calls date periods (like WwII going `FROM 1 SEP 1939 TO 2 SEP 1945`) or date ranges (like the Siddhartha Gautama being born `BET 563 BCE AND 400 BCE`).
+G7 supports bounded approximate dates with `BET`/`AND` as distinct from multi-day events with `FROM`/`TO`. GX has just one form of data range; it is not clear to me from the specification whether that form is intended to be what G7 calls date periods (like WWII going `FROM 1 SEP 1939 TO 2 SEP 1945`) or date ranges (like the Siddhartha Gautama being born `BET 563 BCE AND 400 BCE`).
 
