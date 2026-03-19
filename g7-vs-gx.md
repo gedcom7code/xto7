@@ -70,3 +70,10 @@ GX allows gx:Attribution in many places. G7 allows g7:SUBM and g7:CHAN much more
 GX has a much richer set of event and fact types than G7 does event and attribute types. 
 
 G7 has more ability to refine event and attribute with attribute payloads, `g7:TYPE`, and the generic `g7:EVEN` and `g7:TYPE` structures.
+
+# Dates
+
+GX has a robust and unambiguous date format for the prolypic Gregorian calendar. G7 allows dates to be stored in multiple calendar systems.
+
+G7 supports bounded approximate dates with `BET`/`AND` as distinct from multi-day events with `FROM`/`TO`. GX has just one form of data range; it is not clear to me from the specification whether that form is intended to be what G7 calls date periods (like WwII going `FROM 1 SEP 1939 TO 2 SEP 1945`) or date ranges (like the Siddhartha Gautama being born `BET 563 BCE AND 400 BCE`).
+
